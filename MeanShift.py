@@ -89,21 +89,21 @@ tree = spatial.KDTree(img_table)
 
 # Hyperparameters
 #NUM_WINDOWS = 64
-WINDOW_SIZE = float(0.05)
+WINDOW_SIZE = float(0.2)
 NUM_ITERATIONS = 5
 
 # Initialization
 # initial1_window_positions = np.arange(WINDOW_SIZE/2,256-(WINDOW_SIZE/2),(256/NUM_WINDOWS))
 
-intensity_step = 4
+intensity_step = 8
 min_intensity = np.min(img_table[:,0])*256 + intensity_step/2
 max_intensity = np.max(img_table[:,0])*256 - intensity_step/2
 
-width_step = 16
+width_step = 32
 min_width = width_step/2
 max_width = width - width_step/2
 
-height_step = 16
+height_step = 32
 min_height = height_step/2
 max_height = height - height_step/2
 
@@ -118,6 +118,7 @@ t0 = time()
 for _ in xrange(0,NUM_ITERATIONS):
     new_positions = []
     print "Iteration:\t" + str(_)
+    print "Windows:\t" + str(len(window_positions))
     for position in window_positions:
         # left = np.searchsorted(sorted_img*256, (position - (WINDOW_SIZE/2)), 'left')
         # right = np.searchsorted(sorted_img*256,(position + (WINDOW_SIZE/2)), 'right')
@@ -132,7 +133,6 @@ for _ in xrange(0,NUM_ITERATIONS):
             shifted_pos = denormalize_position(mean_shift_vector(neighbours,normalized_position), width, height)
             new_positions.append(shifted_pos)
     window_positions = new_positions
-    print len(window_positions)
 
 tN = time()
 
